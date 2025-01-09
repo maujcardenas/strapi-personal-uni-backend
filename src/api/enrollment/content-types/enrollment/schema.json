@@ -4,35 +4,30 @@
   "info": {
     "singularName": "enrollment",
     "pluralName": "enrollments",
-    "displayName": "Enrollment"
+    "displayName": "Enrollment",
+    "description": ""
   },
   "options": {
     "draftAndPublish": false
   },
   "pluginOptions": {},
   "attributes": {
-    "Period": {
-      "type": "enumeration",
-      "enum": [
-        "Period 1",
-        "Period 2",
-        "Period 3",
-        "Period 4",
-        "Period 5",
-        "Period 6",
-        "Period 7",
-        "Period 8"
-      ]
-    },
-    "users_permissions_user": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "plugin::users-permissions.user"
-    },
     "subject": {
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::subject.subject"
+    },
+    "student": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::student.student"
+    },
+    "studied_hours": {
+      "type": "decimal",
+      "default": 0
+    },
+    "completed": {
+      "type": "boolean"
     }
   }
 }

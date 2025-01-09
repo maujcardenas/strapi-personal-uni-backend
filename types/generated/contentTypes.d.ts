@@ -372,6 +372,7 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
 export interface ApiEnrollmentEnrollment extends Struct.CollectionTypeSchema {
   collectionName: 'enrollments';
   info: {
+    description: '';
     displayName: 'Enrollment';
     pluralName: 'enrollments';
     singularName: 'enrollment';
@@ -380,6 +381,7 @@ export interface ApiEnrollmentEnrollment extends Struct.CollectionTypeSchema {
     draftAndPublish: false;
   };
   attributes: {
+    completed: Schema.Attribute.Boolean;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -389,27 +391,43 @@ export interface ApiEnrollmentEnrollment extends Struct.CollectionTypeSchema {
       'api::enrollment.enrollment'
     > &
       Schema.Attribute.Private;
-    Period: Schema.Attribute.Enumeration<
-      [
-        'Period 1',
-        'Period 2',
-        'Period 3',
-        'Period 4',
-        'Period 5',
-        'Period 6',
-        'Period 7',
-        'Period 8',
-      ]
-    >;
     publishedAt: Schema.Attribute.DateTime;
+    student: Schema.Attribute.Relation<'oneToOne', 'api::student.student'>;
+    studied_hours: Schema.Attribute.Decimal & Schema.Attribute.DefaultTo<0>;
     subject: Schema.Attribute.Relation<'oneToOne', 'api::subject.subject'>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    users_permissions_user: Schema.Attribute.Relation<
-      'oneToOne',
-      'plugin::users-permissions.user'
-    >;
+  };
+}
+
+export interface ApiStudentStudent extends Struct.CollectionTypeSchema {
+  collectionName: 'students';
+  info: {
+    displayName: 'Student';
+    pluralName: 'students';
+    singularName: 'student';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    Email: Schema.Attribute.Email;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::student.student'
+    > &
+      Schema.Attribute.Private;
+    Name: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    Surname: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
   };
 }
 
@@ -956,6 +974,7 @@ declare module '@strapi/strapi' {
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
       'api::enrollment.enrollment': ApiEnrollmentEnrollment;
+      'api::student.student': ApiStudentStudent;
       'api::subject.subject': ApiSubjectSubject;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
